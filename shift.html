@@ -1,0 +1,189 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Paradigm Shift</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Caslon+Text:ital@0;1&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#060609;--fg:#e8e0d0;--dim:#887a6a;--gold:#caa54a;--mint:#49b4a0;--blush:#c46b78;--purple:#8b5cf6;--old:#4a4a5a;--old-bg:#0a0a10;--new-bg:#060609}
+body{background:var(--bg);color:var(--fg);font-family:'Manrope',sans-serif;font-weight:300;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:48px 24px;gap:40px}
+
+h1{font-family:'Libre Caslon Display',serif;font-size:clamp(1.5rem,3.8vw,2.4rem);text-align:center;line-height:1.15}
+.sub{font-size:.82rem;color:var(--dim);text-align:center;max-width:500px}
+
+/* Two columns */
+.split{display:grid;grid-template-columns:1fr 60px 1fr;max-width:960px;width:100%;gap:0;align-items:stretch}
+
+/* Divider */
+.divider{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;position:relative}
+.divider::before{content:'';position:absolute;top:0;bottom:0;left:50%;width:1px;background:linear-gradient(to bottom,transparent,rgba(202,165,74,.2),transparent)}
+.div-arrow{font-size:1.6rem;color:var(--gold);z-index:1;background:var(--bg);padding:8px 0}
+
+/* Columns */
+.col{padding:24px}
+.col-label{font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:20px;text-align:center}
+.col-title{font-family:'Libre Caslon Display',serif;font-size:clamp(1.1rem,2.5vw,1.5rem);text-align:center;margin-bottom:24px;line-height:1.2}
+
+/* Stack items */
+.stack{display:flex;flex-direction:column;gap:12px}
+.item{border-radius:14px;padding:18px 16px;border:1px solid;display:flex;gap:12px;align-items:flex-start}
+.item-icon{font-size:1.3rem;flex-shrink:0;margin-top:2px}
+.item-text{flex:1}
+.item-title{font-size:.78rem;font-weight:600;margin-bottom:3px}
+.item-desc{font-size:.62rem;color:var(--dim);line-height:1.5}
+
+/* Old world styling */
+.old .item{border-color:rgba(74,74,90,.2);background:rgba(74,74,90,.04)}
+.old .item-title{color:var(--old)}
+.old .col-label{color:var(--old)}
+.old .col-title{color:var(--old)}
+.old .item-icon{opacity:.5;filter:grayscale(1)}
+
+/* New world styling */
+.new .item{border-color:rgba(202,165,74,.15);background:rgba(202,165,74,.02)}
+.new .item-title{color:var(--gold)}
+.new .col-label{color:var(--gold)}
+.new .col-title{color:var(--gold)}
+
+/* Bottom punchline */
+.punch{max-width:700px;text-align:center;margin-top:8px}
+.punch-title{font-family:'Libre Caslon Display',serif;font-size:clamp(1.1rem,2.8vw,1.6rem);color:var(--gold);line-height:1.3;margin-bottom:12px}
+.punch-sub{font-size:.75rem;color:var(--dim);line-height:1.6;max-width:540px;margin:0 auto}
+
+/* Measures row */
+.measures{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:700px;margin-top:4px}
+.measure{font-size:.58rem;letter-spacing:.06em;padding:5px 12px;border-radius:20px;border:1px solid rgba(202,165,74,.15);color:var(--gold);background:rgba(202,165,74,.03)}
+
+#C{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:-1;opacity:.15}
+
+@media(max-width:700px){
+  .split{grid-template-columns:1fr;gap:24px}
+  .divider{flex-direction:row;padding:0 20px}
+  .divider::before{top:50%;bottom:auto;left:0;right:0;width:auto;height:1px;background:linear-gradient(to right,transparent,rgba(202,165,74,.2),transparent)}
+  .div-arrow{transform:rotate(90deg);padding:0 8px}
+}
+</style>
+</head>
+<body>
+<canvas id="C"></canvas>
+
+<h1>The last 100 years vs. <span style="color:var(--gold)">the future.</span></h1>
+<div class="sub">Social sports communities have been organized the same way for a century. That's about to change.</div>
+
+<div class="split">
+
+  <!-- OLD WORLD -->
+  <div class="col old">
+    <div class="col-label">The last 100 years</div>
+    <div class="col-title">Organized by<br><em>ratings &amp; numbers</em></div>
+    <div class="stack">
+      <div class="item">
+        <div class="item-icon">&#9733;</div>
+        <div class="item-text">
+          <div class="item-title">Skill ratings define you</div>
+          <div class="item-desc">DUPR, UTR, NTRP. One number. Your identity is your rating. Access depends on it.</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon">&#128197;</div>
+        <div class="item-text">
+          <div class="item-title">Manual coordination</div>
+          <div class="item-desc">Texts, emails, spreadsheets, signup sheets. One person's brain holds it all together.</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon">&#128187;</div>
+        <div class="item-text">
+          <div class="item-title">Booking software</div>
+          <div class="item-desc">Reserve a court, not an experience. First come first served. No intelligence about who belongs together.</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon">&#128100;</div>
+        <div class="item-text">
+          <div class="item-title">Self-organize or get lucky</div>
+          <div class="item-desc">Hope you end up with people you enjoy. Cancel if you don't. Nobody tracks the social reality.</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon">&#128683;</div>
+        <div class="item-text">
+          <div class="item-title">What it misses</div>
+          <div class="item-desc">Who you actually want to play with. How the group felt. Whether you'd come back. The thing that actually matters.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DIVIDER -->
+  <div class="divider">
+    <div class="div-arrow">&#10132;</div>
+  </div>
+
+  <!-- NEW WORLD -->
+  <div class="col new">
+    <div class="col-label">The future</div>
+    <div class="col-title">Organized by<br><span style="color:var(--gold)">human connection</span></div>
+    <div class="stack">
+      <div class="item">
+        <div class="item-icon">&#129309;</div>
+        <div class="item-text">
+          <div class="item-title">Human connection measured</div>
+          <div class="item-desc">Who you enjoy. Who energizes you. Who you'd choose again. The invisible data that drives everything.</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon">&#9878;</div>
+        <div class="item-text">
+          <div class="item-title">Human value exchange routed</div>
+          <div class="item-desc">The system sees who gives good games and who takes. Generosity is rewarded. Every interaction has a give and a take.</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon">&#129302;</div>
+        <div class="item-text">
+          <div class="item-title">True social matchmaking</div>
+          <div class="item-desc">AI agents negotiate on your behalf. Groups assemble based on who actually belongs together, not who signed up first.</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon">&#127942;</div>
+        <div class="item-text">
+          <div class="item-title">Optimal group experience</div>
+          <div class="item-desc">Every session is curated. 86.7% acceptance in curated groups vs 49.9% in open. The data proves the difference.</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon">&#127760;</div>
+        <div class="item-text">
+          <div class="item-title">Networked reciprocity</div>
+          <div class="item-desc">Your reputation travels with you. Give good games, get great games back. Cross-community intelligence that compounds.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="punch">
+  <div class="punch-title">The future is Give 'n Take.</div>
+  <div class="punch-sub">Maps to the reality of what's actually happening in communities: people giving and taking from each other, every single day.</div>
+</div>
+
+<div class="measures">
+  <span class="measure">Human connection</span>
+  <span class="measure">Value exchange</span>
+  <span class="measure">Social matchmaking</span>
+  <span class="measure">Group experience</span>
+  <span class="measure">Community value</span>
+  <span class="measure">Networked reciprocity</span>
+  <span class="measure">Optimized belonging</span>
+</div>
+
+<script>
+const cv=document.getElementById('C'),cx=cv.getContext('2d');
+function rsz(){cv.width=innerWidth;cv.height=innerHeight}rsz();addEventListener('resize',rsz);
+const N=[];for(let i=0;i<30;i++)N.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-.5)*.15,vy:(Math.random()-.5)*.15,r:Math.random()*1.2+.5});
+(function draw(){cx.clearRect(0,0,cv.width,cv.height);N.forEach(n=>{n.x+=n.vx;n.y+=n.vy;if(n.x<0||n.x>cv.width)n.vx*=-1;if(n.y<0||n.y>cv.height)n.vy*=-1;cx.beginPath();cx.arc(n.x,n.y,n.r,0,Math.PI*2);cx.fillStyle='rgba(202,165,74,.07)';cx.fill()});for(let i=0;i<N.length;i++)for(let j=i+1;j<N.length;j++){const d=Math.hypot(N[i].x-N[j].x,N[i].y-N[j].y);if(d<100){cx.beginPath();cx.moveTo(N[i].x,N[i].y);cx.lineTo(N[j].x,N[j].y);cx.strokeStyle=`rgba(202,165,74,${.03*(1-d/100)})`;cx.stroke()}}requestAnimationFrame(draw)})();
+</script>
+</body></html>
