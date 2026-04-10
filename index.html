@@ -5,38 +5,41 @@
 <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Caslon+Text:ital@0;1&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#060609;--fg:#e8e0d0;--dim:#887a6a;--gold:#caa54a;--mint:#49b4a0;--blush:#c46b78;--purple:#8b5cf6;--card:#0d0d12;--card-b:#1a1a24}
+:root{--bg:#060609;--fg:#e8e0d0;--dim:#887a6a;--gold:#caa54a;--mint:#49b4a0;--blush:#c46b78;--purple:#8b5cf6}
 body{background:var(--bg);color:var(--fg);font-family:'Manrope',sans-serif;font-weight:300;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 32px;gap:36px}
 h1{font-family:'Libre Caslon Display',serif;font-size:clamp(1.6rem,4vw,2.6rem);text-align:center;line-height:1.15}
 
-/* Loop layout */
-.loop{position:relative;width:min(740px,94vw);margin-top:8px}
-.loop-row{display:flex;justify-content:center}
-.loop-bottom{display:flex;justify-content:space-between;margin-top:60px}
+/* Triangle grid */
+.tri{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto auto;gap:0;max-width:660px;width:100%;justify-items:center}
 
-/* Arrow canvas */
-#arrows{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
-
-/* Cards */
-.card{width:230px;border-radius:18px;padding:22px 20px;border:1px solid;text-align:center;background:var(--bg);position:relative;z-index:2}
+/* Card */
+.card{width:240px;border-radius:18px;padding:22px 20px;border:1px solid;text-align:center;background:var(--bg)}
 .card-icon{font-size:1.8rem;margin-bottom:8px}
 .card-title{font-family:'Libre Caslon Display',serif;font-size:.88rem;margin-bottom:8px;line-height:1.25}
 .card-list{list-style:none;font-size:.67rem;color:var(--dim);line-height:1.8;text-align:left}
 
-/* Arrow labels */
-.loop-label{position:absolute;font-size:.55rem;color:var(--dim);opacity:.6;text-align:center;line-height:1.35;z-index:3;user-select:text;cursor:text}
+/* Top card spans both columns */
+.card-top-wrap{grid-column:1/3;margin-bottom:8px}
 
-/* Constellation */
+/* Arrow rows */
+.arrow-row-side{grid-column:1/3;display:flex;justify-content:space-between;align-items:center;padding:0 60px;height:48px}
+.arrow-row-bottom{grid-column:1/3;display:flex;justify-content:center;align-items:center;height:40px;margin-top:8px}
+.arr-text{font-size:.58rem;color:var(--dim);opacity:.6;text-align:center;line-height:1.35}
+.arr-icon{font-size:1.2rem;opacity:.3}
+
+/* Bottom cards */
+.card-bl-wrap{justify-self:start}
+.card-br-wrap{justify-self:end}
+
 #C{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:-1;opacity:.18}
 
-@media(max-width:700px){
-  .loop{width:100%}
-  .loop-bottom{flex-direction:column;align-items:center;gap:24px;margin-top:24px}
-  .loop-row{margin-bottom:0}
-  #arrows{display:none}
-  .loop-label{display:none}
-  .card{width:100%;max-width:320px}
-  .loop::before{content:'Community → Diary → Agent → ↻';display:block;text-align:center;font-size:.6rem;color:var(--dim);opacity:.5;margin-bottom:16px}
+@media(max-width:600px){
+  .tri{grid-template-columns:1fr;gap:0;justify-items:center}
+  .card-top-wrap,.card-bl-wrap,.card-br-wrap{grid-column:1}
+  .card-bl-wrap,.card-br-wrap{justify-self:center}
+  .card{width:100%;max-width:300px}
+  .arrow-row-side{flex-direction:column;height:auto;padding:8px 0;gap:0}
+  .arrow-row-bottom{margin-top:0}
 }
 </style>
 </head>
@@ -44,32 +47,36 @@ h1{font-family:'Libre Caslon Display',serif;font-size:clamp(1.6rem,4vw,2.6rem);t
 <canvas id="C"></canvas>
 <h1>Is this the future?</h1>
 
-<div class="loop" id="loop">
-  <canvas id="arrows"></canvas>
+<div class="tri">
 
-  <!-- Labels -->
-  <div class="loop-label" id="lbl-right">data flows<br>into diary</div>
-  <div class="loop-label" id="lbl-bottom">your diary<br>directs your agent</div>
-  <div class="loop-label" id="lbl-left">agent maximizes<br>your Give 'n Take</div>
-
-  <!-- Top: Communities -->
-  <div class="loop-row">
-    <div class="card" id="card-top" style="border-color:rgba(73,180,160,.2);background:rgba(73,180,160,.03)">
+  <!-- TOP: Communities -->
+  <div class="card-top-wrap">
+    <div class="card" style="border-color:rgba(73,180,160,.2);background:rgba(73,180,160,.03)">
       <div class="card-icon">&#127955;</div>
-      <div class="card-title" style="color:var(--mint)">Your Give 'n Take<br>Communities</div>
+      <div class="card-title" style="color:var(--mint)">Your Give 'n Take<br>Social Communities</div>
       <ul class="card-list">
         <li>People, events, sessions</li>
-        <li>Human connection measured</li>
         <li>Human value exchange routed</li>
         <li>Give 'n Take maximized</li>
       </ul>
     </div>
   </div>
 
-  <!-- Bottom row -->
-  <div class="loop-bottom">
-    <!-- Bottom-left: Agent -->
-    <div class="card" id="card-bl" style="border-color:rgba(139,92,246,.25);background:rgba(139,92,246,.04)">
+  <!-- ARROW ROW: diagonal labels -->
+  <div class="arrow-row-side">
+    <div style="text-align:center">
+      <div class="arr-icon" style="color:var(--gold)">&#8599;</div>
+      <div class="arr-text">agent maximizes<br>your Give 'n Take</div>
+    </div>
+    <div style="text-align:center">
+      <div class="arr-icon" style="color:var(--mint)">&#8600;</div>
+      <div class="arr-text">data flows<br>into diary</div>
+    </div>
+  </div>
+
+  <!-- BOTTOM LEFT: Agent -->
+  <div class="card-bl-wrap">
+    <div class="card" style="border-color:rgba(139,92,246,.25);background:rgba(139,92,246,.04)">
       <div class="card-icon">&#129302;</div>
       <div class="card-title" style="color:var(--purple)">Your Give 'n Take<br>Agent</div>
       <ul class="card-list">
@@ -79,9 +86,11 @@ h1{font-family:'Libre Caslon Display',serif;font-size:clamp(1.6rem,4vw,2.6rem);t
         <li>Ensures your diary stays private</li>
       </ul>
     </div>
+  </div>
 
-    <!-- Bottom-right: Diary -->
-    <div class="card" id="card-br" style="border-color:rgba(202,165,74,.2);background:rgba(202,165,74,.03)">
+  <!-- BOTTOM RIGHT: Diary -->
+  <div class="card-br-wrap">
+    <div class="card" style="border-color:rgba(202,165,74,.2);background:rgba(202,165,74,.03)">
       <div style="margin-bottom:10px;display:flex;justify-content:center"><div style="width:52px;border:1.5px solid rgba(202,165,74,.25);border-radius:8px;padding:6px 5px;background:rgba(202,165,74,.03)"><div style="width:16px;height:1.5px;border-radius:1px;background:rgba(202,165,74,.2);margin:0 auto 5px"></div><div style="display:flex;flex-direction:column;gap:3px"><div style="display:flex;gap:3px;align-items:center"><span style="width:6px;height:6px;border-radius:50%;background:rgba(202,165,74,.2);flex-shrink:0"></span><span style="flex:1;height:2px;border-radius:1px;background:rgba(202,165,74,.12)"></span></div><div style="display:flex;gap:3px;align-items:center"><span style="width:6px;height:6px;border-radius:50%;background:rgba(73,180,160,.2);flex-shrink:0"></span><span style="flex:1;height:2px;border-radius:1px;background:rgba(73,180,160,.1)"></span></div><div style="display:flex;gap:3px;align-items:center"><span style="width:6px;height:6px;border-radius:50%;background:rgba(196,107,120,.2);flex-shrink:0"></span><span style="flex:1;height:2px;border-radius:1px;background:rgba(196,107,120,.1)"></span></div><div style="display:flex;gap:3px;align-items:center"><span style="width:6px;height:6px;border-radius:50%;background:rgba(202,165,74,.15);flex-shrink:0"></span><span style="flex:1;height:2px;border-radius:1px;background:rgba(202,165,74,.08)"></span></div></div><div style="width:10px;height:1.5px;border-radius:1px;background:rgba(202,165,74,.15);margin:5px auto 0"></div></div></div>
       <div class="card-title" style="color:var(--gold)">Your Give 'n Take<br><em>Diary</em> &#128274;</div>
       <ul class="card-list">
@@ -91,96 +100,18 @@ h1{font-family:'Libre Caslon Display',serif;font-size:clamp(1.6rem,4vw,2.6rem);t
       </ul>
     </div>
   </div>
+
+  <!-- ARROW ROW: bottom -->
+  <div class="arrow-row-bottom">
+    <div class="arr-text">your diary directs your agent &nbsp;<span class="arr-icon" style="color:var(--purple)">&#8592;</span></div>
+  </div>
+
 </div>
 
 <script>
-/* ── Constellation background ── */
 const cv=document.getElementById('C'),cx=cv.getContext('2d');
 function rsz(){cv.width=innerWidth;cv.height=innerHeight}rsz();addEventListener('resize',rsz);
 const N=[];for(let i=0;i<30;i++)N.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-.5)*.15,vy:(Math.random()-.5)*.15,r:Math.random()*1.2+.5});
 (function draw(){cx.clearRect(0,0,cv.width,cv.height);N.forEach(n=>{n.x+=n.vx;n.y+=n.vy;if(n.x<0||n.x>cv.width)n.vx*=-1;if(n.y<0||n.y>cv.height)n.vy*=-1;cx.beginPath();cx.arc(n.x,n.y,n.r,0,Math.PI*2);cx.fillStyle='rgba(202,165,74,.07)';cx.fill()});for(let i=0;i<N.length;i++)for(let j=i+1;j<N.length;j++){const d=Math.hypot(N[i].x-N[j].x,N[i].y-N[j].y);if(d<100){cx.beginPath();cx.moveTo(N[i].x,N[i].y);cx.lineTo(N[j].x,N[j].y);cx.strokeStyle=`rgba(202,165,74,${.03*(1-d/100)})`;cx.stroke()}}requestAnimationFrame(draw)})();
-
-/* ── Dynamic arrows that connect to actual card positions ── */
-function drawArrows(){
-  const loop=document.getElementById('loop');
-  const ac=document.getElementById('arrows');
-  const top=document.getElementById('card-top');
-  const bl=document.getElementById('card-bl');
-  const br=document.getElementById('card-br');
-  const lr=document.getElementById('lbl-right');
-  const lb=document.getElementById('lbl-bottom');
-  const ll=document.getElementById('lbl-left');
-
-  const lw=loop.offsetWidth, lh=loop.offsetHeight;
-  ac.width=lw; ac.height=lh;
-  const ctx=ac.getContext('2d');
-  ctx.clearRect(0,0,lw,lh);
-
-  // Get card centers relative to loop
-  function rel(el){ return { x:el.offsetLeft+el.offsetWidth/2, y:el.offsetTop+el.offsetHeight/2, t:el.offsetTop, b:el.offsetTop+el.offsetHeight, l:el.offsetLeft, r:el.offsetLeft+el.offsetWidth }; }
-  const T=rel(top), BL=rel(bl), BR=rel(br);
-
-  // Arrow: Top → Bottom-right (community → diary)
-  const a1s={x:T.r-20, y:T.b};
-  const a1e={x:BR.x, y:BR.t-8};
-  const a1c1={x:T.r+40, y:T.b+40};
-  const a1c2={x:BR.r+20, y:BR.t-60};
-
-  // Arrow: Bottom-right → Bottom-left (diary → agent)
-  const a2s={x:BR.l+20, y:BR.b};
-  const a2e={x:BL.r-20, y:BL.b};
-  const a2c1={x:BR.l-20, y:BR.b+50};
-  const a2c2={x:BL.r+20, y:BL.b+50};
-
-  // Arrow: Bottom-left → Top (agent → community)
-  const a3s={x:BL.x, y:BL.t-8};
-  const a3e={x:T.l+20, y:T.b};
-  const a3c1={x:BL.l-20, y:BL.t-60};
-  const a3c2={x:T.l-40, y:T.b+40};
-
-  function curvedArrow(sx,sy,c1x,c1y,c2x,c2y,ex,ey,color){
-    ctx.beginPath();
-    ctx.moveTo(sx,sy);
-    ctx.bezierCurveTo(c1x,c1y,c2x,c2y,ex,ey);
-    ctx.strokeStyle=color;
-    ctx.lineWidth=1.5;
-    ctx.setLineDash([6,5]);
-    ctx.stroke();
-    ctx.setLineDash([]);
-    // Arrowhead
-    const t=0.97;
-    const t1=1-t;
-    const px=t1*t1*t1*sx+3*t1*t1*t*c1x+3*t1*t*t*c2x+t*t*t*ex;
-    const py=t1*t1*t1*sy+3*t1*t1*t*c1y+3*t1*t*t*c2y+t*t*t*ey;
-    const angle=Math.atan2(ey-py,ex-px);
-    const hl=10;
-    ctx.beginPath();
-    ctx.moveTo(ex,ey);
-    ctx.lineTo(ex-hl*Math.cos(angle-0.35),ey-hl*Math.sin(angle-0.35));
-    ctx.lineTo(ex-hl*Math.cos(angle+0.35),ey-hl*Math.sin(angle+0.35));
-    ctx.closePath();
-    ctx.fillStyle=color;
-    ctx.fill();
-  }
-
-  curvedArrow(a1s.x,a1s.y,a1c1.x,a1c1.y,a1c2.x,a1c2.y,a1e.x,a1e.y,'rgba(73,180,160,.35)');
-  curvedArrow(a2s.x,a2s.y,a2c1.x,a2c1.y,a2c2.x,a2c2.y,a2e.x,a2e.y,'rgba(139,92,246,.35)');
-  curvedArrow(a3s.x,a3s.y,a3c1.x,a3c1.y,a3c2.x,a3c2.y,a3e.x,a3e.y,'rgba(202,165,74,.35)');
-
-  // Position labels at midpoint of each curve
-  function mid(sx,sy,c1x,c1y,c2x,c2y,ex,ey){const t=.5,u=1-t;return{x:u*u*u*sx+3*u*u*t*c1x+3*u*t*t*c2x+t*t*t*ex,y:u*u*u*sy+3*u*u*t*c1y+3*u*t*t*c2y+t*t*t*ey};}
-
-  const m1=mid(a1s.x,a1s.y,a1c1.x,a1c1.y,a1c2.x,a1c2.y,a1e.x,a1e.y);
-  lr.style.left=(m1.x+16)+'px'; lr.style.top=(m1.y-10)+'px';
-
-  const m2=mid(a2s.x,a2s.y,a2c1.x,a2c1.y,a2c2.x,a2c2.y,a2e.x,a2e.y);
-  lb.style.left=(m2.x-40)+'px'; lb.style.top=(m2.y+4)+'px';
-
-  const m3=mid(a3s.x,a3s.y,a3c1.x,a3c1.y,a3c2.x,a3c2.y,a3e.x,a3e.y);
-  ll.style.left=(m3.x-70)+'px'; ll.style.top=(m3.y-10)+'px';
-}
-
-drawArrows();
-window.addEventListener('resize',drawArrows);
 </script>
 </body></html>
