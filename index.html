@@ -6,69 +6,63 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#060609;--fg:#e8e0d0;--dim:#887a6a;--gold:#caa54a;--mint:#49b4a0;--blush:#c46b78;--purple:#8b5cf6;--card:#0d0d12;--card-b:#1a1a24}
-body{background:var(--bg);color:var(--fg);font-family:'Manrope',sans-serif;font-weight:300;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 32px;gap:40px}
+body{background:var(--bg);color:var(--fg);font-family:'Manrope',sans-serif;font-weight:300;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 32px;gap:36px}
 h1{font-family:'Libre Caslon Display',serif;font-size:clamp(1.6rem,4vw,2.6rem);text-align:center;line-height:1.15}
 
-/* Loop container */
-.loop{position:relative;width:min(700px,90vw);aspect-ratio:1.15;margin-top:8px}
+.loop-wrap{width:min(680px,92vw);aspect-ratio:1.1;position:relative}
+
+/* SVG layer */
+.loop-wrap svg{position:absolute;inset:0;width:100%;height:100%;z-index:1}
 
 /* Cards */
-.card{position:absolute;width:220px;border-radius:18px;padding:24px 20px;border:1px solid;text-align:center;background:var(--bg);z-index:2}
-.card-icon{font-size:2rem;margin-bottom:10px}
-.card-title{font-family:'Libre Caslon Display',serif;font-size:.95rem;margin-bottom:8px}
-.card-list{list-style:none;font-size:.68rem;color:var(--dim);line-height:1.8;text-align:left}
+.card{position:absolute;width:32%;border-radius:18px;padding:22px 18px;border:1px solid;text-align:center;background:var(--bg);z-index:2}
+.card-icon{font-size:1.8rem;margin-bottom:8px}
+.card-title{font-family:'Libre Caslon Display',serif;font-size:.9rem;margin-bottom:8px;line-height:1.25}
+.card-list{list-style:none;font-size:.67rem;color:var(--dim);line-height:1.8;text-align:left}
 
-/* Positions: top-center, bottom-left, bottom-right */
-.card-top{top:0;left:50%;transform:translateX(-50%)}
-.card-bl{bottom:0;left:0}
-.card-br{bottom:0;right:0}
+.c-top{top:0;left:50%;transform:translateX(-50%)}
+.c-bl{bottom:0;left:0}
+.c-br{bottom:0;right:0}
 
-/* Arrow labels */
-.label{position:absolute;font-size:.55rem;color:var(--dim);opacity:.7;text-align:center;line-height:1.3;z-index:3}
-.label-right{top:38%;right:2%;transform:rotate(0deg)}
-.label-left{top:38%;left:4%}
-.label-bottom{bottom:2%;left:50%;transform:translateX(-50%)}
-
-/* SVG arrows */
-.arrows{position:absolute;inset:0;z-index:1}
+/* Labels along arrows */
+.alabel{position:absolute;font-size:.58rem;color:var(--dim);opacity:.65;text-align:center;line-height:1.35;z-index:3;pointer-events:none}
 
 #C{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:-1;opacity:.18}
 
 @media(max-width:560px){
-  .card{width:170px;padding:18px 14px}
-  .card-title{font-size:.82rem}
-  .card-list{font-size:.6rem}
+  .card{width:38%;padding:16px 12px}
+  .card-title{font-size:.78rem}
+  .card-list{font-size:.58rem}
+  .alabel{font-size:.5rem}
 }
 </style>
 </head>
 <body>
 <canvas id="C"></canvas>
-
 <h1>Is this the future?</h1>
 
-<div class="loop">
-  <!-- SVG curved arrows -->
-  <svg class="arrows" viewBox="0 0 700 610" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <!-- Top → Bottom-right (community data flows into diary) -->
-    <path d="M 430 140 C 530 200, 560 320, 520 400" stroke="rgba(73,180,160,.25)" stroke-width="1.5" stroke-dasharray="6 4"/>
-    <polygon points="523,393 515,405 527,404" fill="rgba(73,180,160,.35)"/>
-
-    <!-- Bottom-right → Bottom-left (diary agent acts) -->
-    <path d="M 380 540 C 340 580, 280 580, 220 540" stroke="rgba(139,92,246,.25)" stroke-width="1.5" stroke-dasharray="6 4"/>
-    <polygon points="225,544 215,536 218,549" fill="rgba(139,92,246,.35)"/>
-
-    <!-- Bottom-left → Top (agent feeds back to community) -->
-    <path d="M 140 400 C 100 320, 130 200, 230 140" stroke="rgba(202,165,74,.25)" stroke-width="1.5" stroke-dasharray="6 4"/>
-    <polygon points="225,144 236,133 224,137" fill="rgba(202,165,74,.35)"/>
+<div class="loop-wrap" id="loop">
+  <svg viewBox="0 0 100 87" fill="none" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <marker id="a1" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0,0 8,3 0,6" fill="rgba(73,180,160,.5)"/></marker>
+      <marker id="a2" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0,0 8,3 0,6" fill="rgba(139,92,246,.5)"/></marker>
+      <marker id="a3" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0,0 8,3 0,6" fill="rgba(202,165,74,.5)"/></marker>
+    </defs>
+    <!-- Top-right → Bottom-right: community data flows into diary -->
+    <path d="M 62 30 C 78 38, 84 52, 78 62" stroke="rgba(73,180,160,.3)" stroke-width=".4" stroke-dasharray="1.2 .8" marker-end="url(#a1)"/>
+    <!-- Bottom-right → Bottom-left: diary has an agent -->
+    <path d="M 58 78 C 52 84, 42 84, 36 78" stroke="rgba(139,92,246,.3)" stroke-width=".4" stroke-dasharray="1.2 .8" marker-end="url(#a2)"/>
+    <!-- Bottom-left → Top-left: agent feeds back to community -->
+    <path d="M 18 62 C 12 52, 16 38, 34 30" stroke="rgba(202,165,74,.3)" stroke-width=".4" stroke-dasharray="1.2 .8" marker-end="url(#a3)"/>
   </svg>
 
-  <!-- Arrow labels -->
-  <div class="label label-right">data flows<br>into diary</div>
-  <div class="label label-left">agent feeds<br>back to community</div>
-  <div class="label label-bottom">your diary<br>has an agent</div>
+  <!-- Labels -->
+  <div class="alabel" style="top:42%;right:2%">data flows<br>into diary</div>
+  <div class="alabel" style="bottom:5%;left:50%;transform:translateX(-50%)">your diary<br>has an agent</div>
+  <div class="alabel" style="top:42%;left:2%">agent feeds<br>back to community</div>
 
   <!-- Top: Communities -->
-  <div class="card card-top" style="border-color:rgba(73,180,160,.2);background:rgba(73,180,160,.03)">
+  <div class="card c-top" style="border-color:rgba(73,180,160,.2);background:rgba(73,180,160,.03)">
     <div class="card-icon">&#127955;</div>
     <div class="card-title" style="color:var(--mint)">Your Give 'n Take<br>Communities</div>
     <ul class="card-list">
@@ -79,7 +73,7 @@ h1{font-family:'Libre Caslon Display',serif;font-size:clamp(1.6rem,4vw,2.6rem);t
   </div>
 
   <!-- Bottom-right: Diary -->
-  <div class="card card-br" style="border-color:rgba(202,165,74,.2);background:rgba(202,165,74,.03)">
+  <div class="card c-br" style="border-color:rgba(202,165,74,.2);background:rgba(202,165,74,.03)">
     <div class="card-icon">&#128212;&#128274;</div>
     <div class="card-title" style="color:var(--gold)">Your Give 'n Take<br><em>Diary</em></div>
     <ul class="card-list">
@@ -90,7 +84,7 @@ h1{font-family:'Libre Caslon Display',serif;font-size:clamp(1.6rem,4vw,2.6rem);t
   </div>
 
   <!-- Bottom-left: Agent -->
-  <div class="card card-bl" style="border-color:rgba(139,92,246,.25);background:rgba(139,92,246,.04)">
+  <div class="card c-bl" style="border-color:rgba(139,92,246,.25);background:rgba(139,92,246,.04)">
     <div class="card-icon">&#129302;</div>
     <div class="card-title" style="color:var(--purple)">Your Give 'n Take<br>Agent</div>
     <ul class="card-list">
