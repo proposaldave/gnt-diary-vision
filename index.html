@@ -9,37 +9,28 @@
 body{background:var(--bg);color:var(--fg);font-family:'Manrope',sans-serif;font-weight:300;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 32px;gap:36px}
 h1{font-family:'Libre Caslon Display',serif;font-size:clamp(1.6rem,4vw,2.6rem);text-align:center;line-height:1.15}
 
-/* Triangle grid */
-.tri{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto auto;gap:0;max-width:660px;width:100%;justify-items:center}
+.loop{position:relative;width:640px;height:560px}
 
-/* Card */
-.card{width:240px;border-radius:18px;padding:22px 20px;border:1px solid;text-align:center;background:var(--bg)}
+/* Cards */
+.card{position:absolute;width:220px;border-radius:18px;padding:22px 20px;border:1px solid;text-align:center;background:var(--bg);z-index:2}
 .card-icon{font-size:1.8rem;margin-bottom:8px}
 .card-title{font-family:'Libre Caslon Display',serif;font-size:.88rem;margin-bottom:8px;line-height:1.25}
 .card-list{list-style:none;font-size:.67rem;color:var(--dim);line-height:1.8;text-align:left}
 
-/* Top card spans both columns */
-.card-top-wrap{grid-column:1/3;margin-bottom:8px}
+.c-top{top:0;left:210px}
+.c-bl{bottom:20px;left:0}
+.c-br{bottom:20px;right:0}
 
-/* Arrow rows */
-.arrow-row-side{grid-column:1/3;display:flex;justify-content:space-between;align-items:center;padding:0 60px;height:48px}
-.arrow-row-bottom{grid-column:1/3;display:flex;justify-content:center;align-items:center;height:40px;margin-top:8px}
-.arr-text{font-size:.58rem;color:var(--dim);opacity:.6;text-align:center;line-height:1.35}
-.arr-icon{font-size:1.2rem;opacity:.3}
-
-/* Bottom cards */
-.card-bl-wrap{justify-self:start}
-.card-br-wrap{justify-self:end}
+/* Labels */
+.lbl{position:absolute;font-size:.55rem;color:var(--dim);opacity:.6;text-align:center;line-height:1.35;z-index:3}
 
 #C{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:-1;opacity:.18}
 
-@media(max-width:600px){
-  .tri{grid-template-columns:1fr;gap:0;justify-items:center}
-  .card-top-wrap,.card-bl-wrap,.card-br-wrap{grid-column:1}
-  .card-bl-wrap,.card-br-wrap{justify-self:center}
-  .card{width:100%;max-width:300px}
-  .arrow-row-side{flex-direction:column;height:auto;padding:8px 0;gap:0}
-  .arrow-row-bottom{margin-top:0}
+@media(max-width:700px){
+  .loop{width:100%;height:auto;display:flex;flex-direction:column;align-items:center;gap:20px}
+  .card{position:static;width:100%;max-width:300px}
+  .lbl{position:static;margin:4px 0}
+  .loop svg{display:none}
 }
 </style>
 </head>
@@ -47,66 +38,76 @@ h1{font-family:'Libre Caslon Display',serif;font-size:clamp(1.6rem,4vw,2.6rem);t
 <canvas id="C"></canvas>
 <h1>Is this the future?</h1>
 
-<div class="tri">
+<div class="loop">
+  <!-- SVG arrows - drawn to exact card edge positions -->
+  <svg width="640" height="560" style="position:absolute;top:0;left:0;z-index:1" fill="none">
+    <defs>
+      <marker id="am" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0,0 10,3.5 0,7" fill="rgba(73,180,160,.5)"/>
+      </marker>
+      <marker id="ap" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0,0 10,3.5 0,7" fill="rgba(139,92,246,.5)"/>
+      </marker>
+      <marker id="ag" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0,0 10,3.5 0,7" fill="rgba(202,165,74,.5)"/>
+      </marker>
+    </defs>
 
-  <!-- TOP: Communities -->
-  <div class="card-top-wrap">
-    <div class="card" style="border-color:rgba(73,180,160,.2);background:rgba(73,180,160,.03)">
-      <div class="card-icon">&#127955;</div>
-      <div class="card-title" style="color:var(--mint)">Your Give 'n Take<br>Social Communities</div>
-      <ul class="card-list">
-        <li>People, events, sessions</li>
-        <li>Human value exchange routed</li>
-        <li>Give 'n Take maximized</li>
-      </ul>
-    </div>
+    <!-- Arrow 1: Top-right edge → Diary top-left (community → diary) -->
+    <path d="M 430 150 C 520 180, 560 280, 500 340"
+          stroke="rgba(73,180,160,.3)" stroke-width="1.5" stroke-dasharray="6 4"
+          marker-end="url(#am)"/>
+
+    <!-- Arrow 2: Diary bottom → Agent bottom (diary → agent) -->
+    <path d="M 340 520 C 310 560, 260 560, 230 520"
+          stroke="rgba(139,92,246,.3)" stroke-width="1.5" stroke-dasharray="6 4"
+          marker-end="url(#ap)"/>
+
+    <!-- Arrow 3: Agent top-left → Community top-left (agent → community) -->
+    <path d="M 60 340 C 0 280, 40 180, 210 150"
+          stroke="rgba(202,165,74,.3)" stroke-width="1.5" stroke-dasharray="6 4"
+          marker-end="url(#ag)"/>
+  </svg>
+
+  <!-- Labels positioned along each arrow's midpoint -->
+  <div class="lbl" style="top:230px;right:30px">data flows<br>into diary</div>
+  <div class="lbl" style="bottom:-10px;left:50%;transform:translateX(-50%)">your diary<br>directs your agent</div>
+  <div class="lbl" style="top:230px;left:0">agent maximizes<br>your Give 'n Take</div>
+
+  <!-- Top: Communities -->
+  <div class="card c-top" style="border-color:rgba(73,180,160,.2);background:rgba(73,180,160,.03)">
+    <div class="card-icon">&#127955;</div>
+    <div class="card-title" style="color:var(--mint)">Your Give 'n Take<br>Social Communities</div>
+    <ul class="card-list">
+      <li>People, events, sessions</li>
+      <li>Human value exchange routed</li>
+      <li>Give 'n Take maximized</li>
+    </ul>
   </div>
 
-  <!-- ARROW ROW: diagonal labels -->
-  <div class="arrow-row-side">
-    <div style="text-align:center">
-      <div class="arr-icon" style="color:var(--gold)">&#8599;</div>
-      <div class="arr-text">agent maximizes<br>your Give 'n Take</div>
-    </div>
-    <div style="text-align:center">
-      <div class="arr-icon" style="color:var(--mint)">&#8600;</div>
-      <div class="arr-text">data flows<br>into diary</div>
-    </div>
+  <!-- Bottom-left: Agent -->
+  <div class="card c-bl" style="border-color:rgba(139,92,246,.25);background:rgba(139,92,246,.04)">
+    <div class="card-icon">&#129302;</div>
+    <div class="card-title" style="color:var(--purple)">Your Give 'n Take<br>Agent</div>
+    <ul class="card-list">
+      <li>Acts on your behalf</li>
+      <li>Negotiates with other agents</li>
+      <li>Schedules your community life</li>
+      <li>Ensures your diary stays private</li>
+    </ul>
   </div>
 
-  <!-- BOTTOM LEFT: Agent -->
-  <div class="card-bl-wrap">
-    <div class="card" style="border-color:rgba(139,92,246,.25);background:rgba(139,92,246,.04)">
-      <div class="card-icon">&#129302;</div>
-      <div class="card-title" style="color:var(--purple)">Your Give 'n Take<br>Agent</div>
-      <ul class="card-list">
-        <li>Acts on your behalf</li>
-        <li>Negotiates with other agents</li>
-        <li>Schedules your community life</li>
-        <li>Ensures your diary stays private</li>
-      </ul>
-    </div>
+  <!-- Bottom-right: Diary -->
+  <div class="card c-br" style="border-color:rgba(202,165,74,.2);background:rgba(202,165,74,.03)">
+    <div style="margin-bottom:10px;display:flex;justify-content:center"><div style="width:52px;border:1.5px solid rgba(202,165,74,.25);border-radius:8px;padding:6px 5px;background:rgba(202,165,74,.03)"><div style="width:16px;height:1.5px;border-radius:1px;background:rgba(202,165,74,.2);margin:0 auto 5px"></div><div style="display:flex;flex-direction:column;gap:3px"><div style="display:flex;gap:3px;align-items:center"><span style="width:6px;height:6px;border-radius:50%;background:rgba(202,165,74,.2);flex-shrink:0"></span><span style="flex:1;height:2px;border-radius:1px;background:rgba(202,165,74,.12)"></span></div><div style="display:flex;gap:3px;align-items:center"><span style="width:6px;height:6px;border-radius:50%;background:rgba(73,180,160,.2);flex-shrink:0"></span><span style="flex:1;height:2px;border-radius:1px;background:rgba(73,180,160,.1)"></span></div><div style="display:flex;gap:3px;align-items:center"><span style="width:6px;height:6px;border-radius:50%;background:rgba(196,107,120,.2);flex-shrink:0"></span><span style="flex:1;height:2px;border-radius:1px;background:rgba(196,107,120,.1)"></span></div><div style="display:flex;gap:3px;align-items:center"><span style="width:6px;height:6px;border-radius:50%;background:rgba(202,165,74,.15);flex-shrink:0"></span><span style="flex:1;height:2px;border-radius:1px;background:rgba(202,165,74,.08)"></span></div></div><div style="width:10px;height:1.5px;border-radius:1px;background:rgba(202,165,74,.15);margin:5px auto 0"></div></div></div>
+    <div class="card-title" style="color:var(--gold)">Your Give 'n Take<br><em>Diary</em> &#128274;</div>
+    <ul class="card-list">
+      <li>Cryptographic data privacy + ownership</li>
+      <li>Invitation RSVP, rank players</li>
+      <li>Private thoughts, feelings, memories</li>
+      <li>Feedback, relationship AI chatbot</li>
+    </ul>
   </div>
-
-  <!-- BOTTOM RIGHT: Diary -->
-  <div class="card-br-wrap">
-    <div class="card" style="border-color:rgba(202,165,74,.2);background:rgba(202,165,74,.03)">
-      <div style="margin-bottom:10px;display:flex;justify-content:center"><div style="width:52px;border:1.5px solid rgba(202,165,74,.25);border-radius:8px;padding:6px 5px;background:rgba(202,165,74,.03)"><div style="width:16px;height:1.5px;border-radius:1px;background:rgba(202,165,74,.2);margin:0 auto 5px"></div><div style="display:flex;flex-direction:column;gap:3px"><div style="display:flex;gap:3px;align-items:center"><span style="width:6px;height:6px;border-radius:50%;background:rgba(202,165,74,.2);flex-shrink:0"></span><span style="flex:1;height:2px;border-radius:1px;background:rgba(202,165,74,.12)"></span></div><div style="display:flex;gap:3px;align-items:center"><span style="width:6px;height:6px;border-radius:50%;background:rgba(73,180,160,.2);flex-shrink:0"></span><span style="flex:1;height:2px;border-radius:1px;background:rgba(73,180,160,.1)"></span></div><div style="display:flex;gap:3px;align-items:center"><span style="width:6px;height:6px;border-radius:50%;background:rgba(196,107,120,.2);flex-shrink:0"></span><span style="flex:1;height:2px;border-radius:1px;background:rgba(196,107,120,.1)"></span></div><div style="display:flex;gap:3px;align-items:center"><span style="width:6px;height:6px;border-radius:50%;background:rgba(202,165,74,.15);flex-shrink:0"></span><span style="flex:1;height:2px;border-radius:1px;background:rgba(202,165,74,.08)"></span></div></div><div style="width:10px;height:1.5px;border-radius:1px;background:rgba(202,165,74,.15);margin:5px auto 0"></div></div></div>
-      <div class="card-title" style="color:var(--gold)">Your Give 'n Take<br><em>Diary</em> &#128274;</div>
-      <ul class="card-list">
-        <li>Cryptographic data privacy + ownership</li>
-        <li>Invitation RSVP, rank players</li>
-        <li>Private thoughts, feelings, memories</li>
-        <li>Feedback, relationship AI chatbot</li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- ARROW ROW: bottom -->
-  <div class="arrow-row-bottom">
-    <div class="arr-text">your diary directs your agent &nbsp;<span class="arr-icon" style="color:var(--purple)">&#8592;</span></div>
-  </div>
-
 </div>
 
 <script>
