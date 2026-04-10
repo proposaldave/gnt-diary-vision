@@ -9,7 +9,7 @@
 body{background:var(--bg);color:var(--fg);font-family:'Manrope',sans-serif;font-weight:300;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 32px;gap:36px}
 h1{font-family:'Libre Caslon Display',serif;font-size:clamp(1.6rem,4vw,2.6rem);text-align:center;line-height:1.15}
 
-.loop{position:relative;width:700px;height:620px}
+.loop{position:relative;width:700px;height:680px}
 
 .card{position:absolute;width:230px;border-radius:18px;padding:22px 20px;border:1px solid;text-align:center;background:var(--bg);z-index:2}
 .card-icon{font-size:1.8rem;margin-bottom:8px}
@@ -134,26 +134,23 @@ function drawLoop(){
     c.fill();
   }
 
-  // 1. Top → Bottom-right (community → diary): exit from right side of top, enter top of diary
-  const a1={x0:T.r, y0:T.cy, x1:BR.cx, y1:BR.t};
-  arrow(a1.x0,a1.y0, a1.x0+60,a1.y0+40, a1.x1+40,a1.y1-60, a1.x1,a1.y1, 'rgba(73,180,160,.35)');
+  // 1. Top-right → Diary-top: sweeps right and down
+  arrow(T.r+5, T.b-30,  T.r+100, T.b+30,  BR.r+80, BR.t-30,  BR.cx+10, BR.t-5, 'rgba(73,180,160,.35)');
 
-  // 2. Bottom-right → Bottom-left (diary → agent): exit from left side of diary, enter right side of agent
-  const a2={x0:BR.l, y0:BR.cy+20, x1:BL.r, y1:BL.cy+20};
-  arrow(a2.x0,a2.y0, a2.x0-60,a2.y0+70, a2.x1+60,a2.y1+70, a2.x1,a2.y1, 'rgba(139,92,246,.35)');
+  // 2. Diary-left → Agent-right: sweeps down and left
+  arrow(BR.l-5, BR.cy+10,  BR.l-50, BR.b+60,  BL.r+50, BL.b+60,  BL.r+5, BL.cy+10, 'rgba(139,92,246,.35)');
 
-  // 3. Bottom-left → Top (agent → community): exit from top of agent, enter left side of top
-  const a3={x0:BL.cx, y0:BL.t, x1:T.l, y1:T.cy};
-  arrow(a3.x0,a3.y0, a3.x0-40,a3.y0-60, a3.x1-60,a3.y1+40, a3.x1,a3.y1, 'rgba(202,165,74,.35)');
+  // 3. Agent-top → Top-left: sweeps up and right
+  arrow(BL.cx-10, BL.t-5,  BL.l-80, BL.t-30,  T.l-100, T.b+30,  T.l-5, T.b-30, 'rgba(202,165,74,.35)');
 
   // Position labels at curve midpoints
   function mid(x0,y0,cx1,cy1,cx2,cy2,x1,y1){
     const t=.5,u=1-t;
     return{x:u*u*u*x0+3*u*u*t*cx1+3*u*t*t*cx2+t*t*t*x1, y:u*u*u*y0+3*u*u*t*cy1+3*u*t*t*cy2+t*t*t*y1};
   }
-  const m1=mid(a1.x0,a1.y0, a1.x0+60,a1.y0+40, a1.x1+40,a1.y1-60, a1.x1,a1.y1);
-  const m2=mid(a2.x0,a2.y0, a2.x0-60,a2.y0+70, a2.x1+60,a2.y1+70, a2.x1,a2.y1);
-  const m3=mid(a3.x0,a3.y0, a3.x0-40,a3.y0-60, a3.x1-60,a3.y1+40, a3.x1,a3.y1);
+  const m1=mid(T.r+5,T.b-30, T.r+100,T.b+30, BR.r+80,BR.t-30, BR.cx+10,BR.t-5);
+  const m2=mid(BR.l-5,BR.cy+10, BR.l-50,BR.b+60, BL.r+50,BL.b+60, BL.r+5,BL.cy+10);
+  const m3=mid(BL.cx-10,BL.t-5, BL.l-80,BL.t-30, T.l-100,T.b+30, T.l-5,T.b-30);
 
   const lr=document.getElementById('lbl-r');
   const lb=document.getElementById('lbl-b');
