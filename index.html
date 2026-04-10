@@ -9,28 +9,27 @@
 body{background:var(--bg);color:var(--fg);font-family:'Manrope',sans-serif;font-weight:300;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 32px;gap:36px}
 h1{font-family:'Libre Caslon Display',serif;font-size:clamp(1.6rem,4vw,2.6rem);text-align:center;line-height:1.15}
 
-.loop{position:relative;width:640px;height:560px}
+.loop{position:relative;width:700px;height:620px}
 
-/* Cards */
-.card{position:absolute;width:220px;border-radius:18px;padding:22px 20px;border:1px solid;text-align:center;background:var(--bg);z-index:2}
+.card{position:absolute;width:230px;border-radius:18px;padding:22px 20px;border:1px solid;text-align:center;background:var(--bg);z-index:2}
 .card-icon{font-size:1.8rem;margin-bottom:8px}
 .card-title{font-family:'Libre Caslon Display',serif;font-size:.88rem;margin-bottom:8px;line-height:1.25}
 .card-list{list-style:none;font-size:.67rem;color:var(--dim);line-height:1.8;text-align:left}
 
-.c-top{top:0;left:210px}
-.c-bl{bottom:20px;left:0}
-.c-br{bottom:20px;right:0}
+.c-top{top:0;left:235px}
+.c-bl{bottom:30px;left:10px}
+.c-br{bottom:30px;right:10px}
 
-/* Labels */
 .lbl{position:absolute;font-size:.55rem;color:var(--dim);opacity:.6;text-align:center;line-height:1.35;z-index:3}
 
+#arrows{position:absolute;inset:0;z-index:1;pointer-events:none}
 #C{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:-1;opacity:.18}
 
-@media(max-width:700px){
+@media(max-width:740px){
   .loop{width:100%;height:auto;display:flex;flex-direction:column;align-items:center;gap:20px}
-  .card{position:static;width:100%;max-width:300px}
+  .card{position:static;width:100%;max-width:320px}
   .lbl{position:static;margin:4px 0}
-  .loop svg{display:none}
+  #arrows{display:none}
 }
 </style>
 </head>
@@ -38,44 +37,14 @@ h1{font-family:'Libre Caslon Display',serif;font-size:clamp(1.6rem,4vw,2.6rem);t
 <canvas id="C"></canvas>
 <h1>Is this the future?</h1>
 
-<div class="loop">
-  <!-- SVG arrows - drawn to exact card edge positions -->
-  <svg width="640" height="560" style="position:absolute;top:0;left:0;z-index:1" fill="none">
-    <defs>
-      <marker id="am" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-        <polygon points="0,0 10,3.5 0,7" fill="rgba(73,180,160,.5)"/>
-      </marker>
-      <marker id="ap" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-        <polygon points="0,0 10,3.5 0,7" fill="rgba(139,92,246,.5)"/>
-      </marker>
-      <marker id="ag" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-        <polygon points="0,0 10,3.5 0,7" fill="rgba(202,165,74,.5)"/>
-      </marker>
-    </defs>
+<div class="loop" id="loop">
+  <canvas id="arrows"></canvas>
 
-    <!-- Arrow 1: Top-right edge → Diary top-left (community → diary) -->
-    <path d="M 430 150 C 520 180, 560 280, 500 340"
-          stroke="rgba(73,180,160,.3)" stroke-width="1.5" stroke-dasharray="6 4"
-          marker-end="url(#am)"/>
+  <div class="lbl" id="lbl-r">data flows<br>into diary</div>
+  <div class="lbl" id="lbl-b">your diary<br>directs your agent</div>
+  <div class="lbl" id="lbl-l">agent maximizes<br>your Give 'n Take</div>
 
-    <!-- Arrow 2: Diary bottom → Agent bottom (diary → agent) -->
-    <path d="M 340 520 C 310 560, 260 560, 230 520"
-          stroke="rgba(139,92,246,.3)" stroke-width="1.5" stroke-dasharray="6 4"
-          marker-end="url(#ap)"/>
-
-    <!-- Arrow 3: Agent top-left → Community top-left (agent → community) -->
-    <path d="M 60 340 C 0 280, 40 180, 210 150"
-          stroke="rgba(202,165,74,.3)" stroke-width="1.5" stroke-dasharray="6 4"
-          marker-end="url(#ag)"/>
-  </svg>
-
-  <!-- Labels positioned along each arrow's midpoint -->
-  <div class="lbl" style="top:230px;right:30px">data flows<br>into diary</div>
-  <div class="lbl" style="bottom:-10px;left:50%;transform:translateX(-50%)">your diary<br>directs your agent</div>
-  <div class="lbl" style="top:230px;left:0">agent maximizes<br>your Give 'n Take</div>
-
-  <!-- Top: Communities -->
-  <div class="card c-top" style="border-color:rgba(73,180,160,.2);background:rgba(73,180,160,.03)">
+  <div class="card c-top" id="ct" style="border-color:rgba(73,180,160,.2);background:rgba(73,180,160,.03)">
     <div class="card-icon">&#127955;</div>
     <div class="card-title" style="color:var(--mint)">Your Give 'n Take<br>Social Communities</div>
     <ul class="card-list">
@@ -86,8 +55,7 @@ h1{font-family:'Libre Caslon Display',serif;font-size:clamp(1.6rem,4vw,2.6rem);t
     </ul>
   </div>
 
-  <!-- Bottom-left: Agent -->
-  <div class="card c-bl" style="border-color:rgba(139,92,246,.25);background:rgba(139,92,246,.04)">
+  <div class="card c-bl" id="cbl" style="border-color:rgba(139,92,246,.25);background:rgba(139,92,246,.04)">
     <div class="card-icon">&#129302;</div>
     <div class="card-title" style="color:var(--purple)">Your Give 'n Take<br>Agent</div>
     <ul class="card-list">
@@ -98,8 +66,7 @@ h1{font-family:'Libre Caslon Display',serif;font-size:clamp(1.6rem,4vw,2.6rem);t
     </ul>
   </div>
 
-  <!-- Bottom-right: Diary -->
-  <div class="card c-br" style="border-color:rgba(202,165,74,.2);background:rgba(202,165,74,.03)">
+  <div class="card c-br" id="cbr" style="border-color:rgba(202,165,74,.2);background:rgba(202,165,74,.03)">
     <div style="margin-bottom:10px;display:flex;justify-content:center"><div style="width:52px;border:1.5px solid rgba(202,165,74,.25);border-radius:8px;padding:6px 5px;background:rgba(202,165,74,.03)"><div style="width:16px;height:1.5px;border-radius:1px;background:rgba(202,165,74,.2);margin:0 auto 5px"></div><div style="display:flex;flex-direction:column;gap:3px"><div style="display:flex;gap:3px;align-items:center"><span style="width:6px;height:6px;border-radius:50%;background:rgba(202,165,74,.2);flex-shrink:0"></span><span style="flex:1;height:2px;border-radius:1px;background:rgba(202,165,74,.12)"></span></div><div style="display:flex;gap:3px;align-items:center"><span style="width:6px;height:6px;border-radius:50%;background:rgba(73,180,160,.2);flex-shrink:0"></span><span style="flex:1;height:2px;border-radius:1px;background:rgba(73,180,160,.1)"></span></div><div style="display:flex;gap:3px;align-items:center"><span style="width:6px;height:6px;border-radius:50%;background:rgba(196,107,120,.2);flex-shrink:0"></span><span style="flex:1;height:2px;border-radius:1px;background:rgba(196,107,120,.1)"></span></div><div style="display:flex;gap:3px;align-items:center"><span style="width:6px;height:6px;border-radius:50%;background:rgba(202,165,74,.15);flex-shrink:0"></span><span style="flex:1;height:2px;border-radius:1px;background:rgba(202,165,74,.08)"></span></div></div><div style="width:10px;height:1.5px;border-radius:1px;background:rgba(202,165,74,.15);margin:5px auto 0"></div></div></div>
     <div class="card-title" style="color:var(--gold)">Your Give 'n Take<br><em>Diary</em> &#128274;</div>
     <ul class="card-list">
@@ -113,9 +80,90 @@ h1{font-family:'Libre Caslon Display',serif;font-size:clamp(1.6rem,4vw,2.6rem);t
 </div>
 
 <script>
+/* Constellation */
 const cv=document.getElementById('C'),cx=cv.getContext('2d');
 function rsz(){cv.width=innerWidth;cv.height=innerHeight}rsz();addEventListener('resize',rsz);
 const N=[];for(let i=0;i<30;i++)N.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-.5)*.15,vy:(Math.random()-.5)*.15,r:Math.random()*1.2+.5});
 (function draw(){cx.clearRect(0,0,cv.width,cv.height);N.forEach(n=>{n.x+=n.vx;n.y+=n.vy;if(n.x<0||n.x>cv.width)n.vx*=-1;if(n.y<0||n.y>cv.height)n.vy*=-1;cx.beginPath();cx.arc(n.x,n.y,n.r,0,Math.PI*2);cx.fillStyle='rgba(202,165,74,.07)';cx.fill()});for(let i=0;i<N.length;i++)for(let j=i+1;j<N.length;j++){const d=Math.hypot(N[i].x-N[j].x,N[i].y-N[j].y);if(d<100){cx.beginPath();cx.moveTo(N[i].x,N[i].y);cx.lineTo(N[j].x,N[j].y);cx.strokeStyle=`rgba(202,165,74,${.03*(1-d/100)})`;cx.stroke()}}requestAnimationFrame(draw)})();
+
+/* Dynamic arrows */
+function drawLoop(){
+  const loop=document.getElementById('loop');
+  const ac=document.getElementById('arrows');
+  if(!loop||!ac||window.innerWidth<740)return;
+
+  const ct=document.getElementById('ct');
+  const cbl=document.getElementById('cbl');
+  const cbr=document.getElementById('cbr');
+
+  ac.width=loop.offsetWidth;
+  ac.height=loop.offsetHeight;
+  const c=ac.getContext('2d');
+  c.clearRect(0,0,ac.width,ac.height);
+
+  function box(el){
+    return{
+      cx:el.offsetLeft+el.offsetWidth/2,
+      cy:el.offsetTop+el.offsetHeight/2,
+      t:el.offsetTop, b:el.offsetTop+el.offsetHeight,
+      l:el.offsetLeft, r:el.offsetLeft+el.offsetWidth
+    };
+  }
+  const T=box(ct), BL=box(cbl), BR=box(cbr);
+
+  function arrow(x0,y0,cx1,cy1,cx2,cy2,x1,y1,col){
+    c.beginPath();
+    c.moveTo(x0,y0);
+    c.bezierCurveTo(cx1,cy1,cx2,cy2,x1,y1);
+    c.strokeStyle=col;
+    c.lineWidth=1.5;
+    c.setLineDash([6,5]);
+    c.stroke();
+    c.setLineDash([]);
+    // arrowhead
+    const dt=0.98,u=1-dt;
+    const px=u*u*u*x0+3*u*u*dt*cx1+3*u*dt*dt*cx2+dt*dt*dt*x1;
+    const py=u*u*u*y0+3*u*u*dt*cy1+3*u*dt*dt*cy2+dt*dt*dt*y1;
+    const a=Math.atan2(y1-py,x1-px);
+    c.beginPath();
+    c.moveTo(x1,y1);
+    c.lineTo(x1-12*Math.cos(a-.3),y1-12*Math.sin(a-.3));
+    c.lineTo(x1-12*Math.cos(a+.3),y1-12*Math.sin(a+.3));
+    c.closePath();
+    c.fillStyle=col;
+    c.fill();
+  }
+
+  // 1. Top → Bottom-right (community → diary): exit from right side of top, enter top of diary
+  const a1={x0:T.r, y0:T.cy, x1:BR.cx, y1:BR.t};
+  arrow(a1.x0,a1.y0, a1.x0+60,a1.y0+40, a1.x1+40,a1.y1-60, a1.x1,a1.y1, 'rgba(73,180,160,.35)');
+
+  // 2. Bottom-right → Bottom-left (diary → agent): exit from left side of diary, enter right side of agent
+  const a2={x0:BR.l, y0:BR.cy+20, x1:BL.r, y1:BL.cy+20};
+  arrow(a2.x0,a2.y0, a2.x0-60,a2.y0+70, a2.x1+60,a2.y1+70, a2.x1,a2.y1, 'rgba(139,92,246,.35)');
+
+  // 3. Bottom-left → Top (agent → community): exit from top of agent, enter left side of top
+  const a3={x0:BL.cx, y0:BL.t, x1:T.l, y1:T.cy};
+  arrow(a3.x0,a3.y0, a3.x0-40,a3.y0-60, a3.x1-60,a3.y1+40, a3.x1,a3.y1, 'rgba(202,165,74,.35)');
+
+  // Position labels at curve midpoints
+  function mid(x0,y0,cx1,cy1,cx2,cy2,x1,y1){
+    const t=.5,u=1-t;
+    return{x:u*u*u*x0+3*u*u*t*cx1+3*u*t*t*cx2+t*t*t*x1, y:u*u*u*y0+3*u*u*t*cy1+3*u*t*t*cy2+t*t*t*y1};
+  }
+  const m1=mid(a1.x0,a1.y0, a1.x0+60,a1.y0+40, a1.x1+40,a1.y1-60, a1.x1,a1.y1);
+  const m2=mid(a2.x0,a2.y0, a2.x0-60,a2.y0+70, a2.x1+60,a2.y1+70, a2.x1,a2.y1);
+  const m3=mid(a3.x0,a3.y0, a3.x0-40,a3.y0-60, a3.x1-60,a3.y1+40, a3.x1,a3.y1);
+
+  const lr=document.getElementById('lbl-r');
+  const lb=document.getElementById('lbl-b');
+  const ll=document.getElementById('lbl-l');
+  lr.style.left=(m1.x+14)+'px'; lr.style.top=(m1.y-12)+'px';
+  lb.style.left=(m2.x-36)+'px'; lb.style.top=(m2.y+8)+'px';
+  ll.style.left=(m3.x-70)+'px'; ll.style.top=(m3.y-12)+'px';
+}
+
+drawLoop();
+window.addEventListener('resize',drawLoop);
 </script>
 </body></html>
