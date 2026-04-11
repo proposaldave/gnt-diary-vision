@@ -6,33 +6,33 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#060609;--fg:#e8e0d0;--dim:#887a6a;--gold:#caa54a;--mint:#49b4a0;--old:#4a4a5a}
-body{background:var(--bg);color:var(--fg);font-family:'Manrope',sans-serif;font-weight:300;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:56px 24px;gap:40px}
+body{background:var(--bg);color:var(--fg);font-family:'Manrope',sans-serif;font-weight:300;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:56px 24px;gap:44px}
 h1{font-family:'Libre Caslon Display',serif;font-size:clamp(1.5rem,3.8vw,2.4rem);text-align:center;line-height:1.15}
 
-.split{display:grid;grid-template-columns:1fr 40px 1fr;max-width:800px;width:100%;align-items:center}
+/* Hero contrast */
+.hero-split{display:grid;grid-template-columns:1fr 50px 1fr;max-width:820px;width:100%;align-items:center}
+.hero-box{border-radius:20px;padding:32px 28px;text-align:center}
+.hero-label{font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px}
+.hero-big{font-family:'Libre Caslon Display',serif;font-size:clamp(1.3rem,3vw,2rem);line-height:1.2;margin-bottom:10px}
+.hero-sub{font-size:.7rem;line-height:1.5}
+.hero-mid{display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:var(--gold);opacity:.4}
 
-.col{display:flex;flex-direction:column;gap:10px}
-.col-label{font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;text-align:center;margin-bottom:8px}
-
-.row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;border:1px solid}
-.row-icon{font-size:1.1rem;flex-shrink:0;width:28px;text-align:center}
-.row-text{font-size:.72rem;font-weight:400}
-
-.old .row{border-color:rgba(74,74,90,.15);background:rgba(74,74,90,.03)}
-.old .row-text{color:var(--old)}
-.old .row-icon{opacity:.4;filter:grayscale(1)}
-.old .col-label{color:var(--old)}
-
-.new .row{border-color:rgba(202,165,74,.15);background:rgba(202,165,74,.02)}
-.new .row-text{color:var(--fg)}
-.new .col-label{color:var(--gold)}
-
-.mid{display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:var(--gold);opacity:.4}
+/* Supporting rows below */
+.support{display:grid;grid-template-columns:1fr 1fr;max-width:720px;width:100%;gap:8px}
+.s-row{display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:10px;border:1px solid;font-size:.68rem}
+.s-icon{font-size:.9rem;flex-shrink:0;width:22px;text-align:center}
+.s-old{border-color:rgba(74,74,90,.12);color:var(--old)}
+.s-old .s-icon{opacity:.4;filter:grayscale(1)}
+.s-new{border-color:rgba(202,165,74,.12);color:var(--fg)}
 
 .punch{font-family:'Libre Caslon Display',serif;font-size:clamp(1rem,2.5vw,1.5rem);color:var(--gold);text-align:center;opacity:.7}
 
 #C{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:-1;opacity:.15}
-@media(max-width:600px){.split{grid-template-columns:1fr;gap:20px}.mid{transform:rotate(90deg)}}
+@media(max-width:600px){
+  .hero-split{grid-template-columns:1fr;gap:16px}
+  .hero-mid{transform:rotate(90deg)}
+  .support{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
@@ -40,26 +40,31 @@ h1{font-family:'Libre Caslon Display',serif;font-size:clamp(1.5rem,3.8vw,2.4rem)
 
 <h1>The last 100 years vs. <span style="color:var(--gold)">the future.</span></h1>
 
-<div class="split">
-  <div class="col old">
-    <div class="col-label">Old paradigm</div>
-    <div class="row"><div class="row-icon">⭐</div><div class="row-text">Skill ratings define you</div></div>
-    <div class="row"><div class="row-icon">📋</div><div class="row-text">Manual coordination</div></div>
-    <div class="row"><div class="row-icon">💻</div><div class="row-text">Booking software, no intelligence</div></div>
-    <div class="row"><div class="row-icon">🎲</div><div class="row-text">Self-organize or get lucky</div></div>
-    <div class="row"><div class="row-icon">🚫</div><div class="row-text">Nobody measures what matters</div></div>
+<!-- BIG HERO CONTRAST -->
+<div class="hero-split">
+  <div class="hero-box" style="border:1px solid rgba(74,74,90,.15);background:rgba(74,74,90,.03)">
+    <div class="hero-label" style="color:var(--old)">Old paradigm</div>
+    <div class="hero-big" style="color:var(--old)">Measures<br><em>skill ratings</em></div>
+    <div class="hero-sub" style="color:var(--old);opacity:.6">A number defines you.<br>Your rating gets you access.</div>
   </div>
-
-  <div class="mid">➤</div>
-
-  <div class="col new">
-    <div class="col-label">Give 'n Take</div>
-    <div class="row"><div class="row-icon">🤝</div><div class="row-text">Human connection measured</div></div>
-    <div class="row"><div class="row-icon">⚖️</div><div class="row-text">Value exchange routed</div></div>
-    <div class="row"><div class="row-icon">🤖</div><div class="row-text">True social matchmaking</div></div>
-    <div class="row"><div class="row-icon">🏆</div><div class="row-text">Optimal group experience</div></div>
-    <div class="row"><div class="row-icon">🌐</div><div class="row-text">Networked reciprocity</div></div>
+  <div class="hero-mid">➤</div>
+  <div class="hero-box" style="border:1px solid rgba(202,165,74,.2);background:rgba(202,165,74,.03)">
+    <div class="hero-label" style="color:var(--gold)">Give 'n Take</div>
+    <div class="hero-big" style="color:var(--gold)">Measures<br><em>human value exchange</em></div>
+    <div class="hero-sub" style="color:var(--fg);opacity:.6">What you give to others.<br>What you get back.</div>
   </div>
+</div>
+
+<!-- SUPPORTING DETAILS -->
+<div class="support">
+  <div class="s-row s-old"><div class="s-icon">📋</div>Manual coordination</div>
+  <div class="s-row s-new"><div class="s-icon">🤖</div>True social matchmaking</div>
+  <div class="s-row s-old"><div class="s-icon">💻</div>Booking software, no intelligence</div>
+  <div class="s-row s-new"><div class="s-icon">🏆</div>Optimal group experience</div>
+  <div class="s-row s-old"><div class="s-icon">🎲</div>Self-organize or get lucky</div>
+  <div class="s-row s-new"><div class="s-icon">🤝</div>Human connection measured</div>
+  <div class="s-row s-old"><div class="s-icon">🚫</div>Nobody measures what matters</div>
+  <div class="s-row s-new"><div class="s-icon">🌐</div>Networked reciprocity</div>
 </div>
 
 <div class="punch">The future is Give 'n Take.</div>
