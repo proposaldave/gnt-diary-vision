@@ -5,128 +5,154 @@
 <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#060609;--fg:#e8e0d0;--dim:#887a6a;--gold:#caa54a;--mint:#49b4a0;--old:#4a4a5a;--purple:#8b5cf6}
-body{background:var(--bg);color:var(--fg);font-family:'Manrope',sans-serif;font-weight:300;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:56px 24px;gap:0}
-h1{font-family:'Libre Caslon Display',serif;font-size:clamp(1.4rem,3.5vw,2.2rem);text-align:center;line-height:1.15;margin-bottom:40px}
+:root{--bg:#060609;--fg:#e8e0d0;--dim:#887a6a;--gold:#caa54a;--mint:#49b4a0;--old:#4a4a5a}
+body{background:var(--bg);color:var(--fg);font-family:'Manrope',sans-serif;font-weight:300;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:56px 24px;gap:40px}
+h1{font-family:'Libre Caslon Display',serif;font-size:clamp(1.4rem,3.5vw,2.2rem);text-align:center;line-height:1.15}
 
-/* Timeline */
-.timeline{position:relative;max-width:700px;width:100%;padding-left:60px}
+/* ── Horizontal timeline ── */
+.tl-wrap{max-width:880px;width:100%;position:relative;padding-bottom:20px}
+.tl-track{display:flex;align-items:flex-end;gap:0;position:relative;padding-top:80px}
+.tl-track::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(to right,rgba(74,74,90,.15),rgba(74,74,90,.2) 75%,rgba(202,165,74,.5) 85%,var(--gold))}
 
-/* Vertical line */
-.timeline::before{content:'';position:absolute;left:28px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,rgba(74,74,90,.2) 0%,rgba(74,74,90,.2) 70%,rgba(202,165,74,.4) 78%,rgba(202,165,74,.5) 100%)}
+.tl-era{flex:1;display:flex;flex-direction:column;align-items:center;position:relative;padding-bottom:16px}
+.tl-era::after{content:'';position:absolute;bottom:-1px;width:8px;height:8px;border-radius:50%;z-index:1}
+.tl-era.old::after{background:var(--old);opacity:.4}
+.tl-era.now::after{background:var(--gold);box-shadow:0 0 12px rgba(202,165,74,.5);width:12px;height:12px;bottom:-3px}
 
-/* Era sections */
-.era{position:relative;padding:12px 0}
-.era-dot{position:absolute;left:-38px;width:12px;height:12px;border-radius:50%;top:16px}
-.era-year{font-size:.55rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px}
-.era-sport{font-size:.82rem;font-weight:500;margin-bottom:2px}
-.era-system{font-size:.6rem;opacity:.5;font-style:italic}
+.tl-icon{font-size:1.6rem;margin-bottom:6px;opacity:.4;filter:grayscale(1)}
+.tl-era.now .tl-icon{opacity:1;filter:none;font-size:1.8rem}
+.tl-year{font-size:.5rem;letter-spacing:.06em;color:var(--old);margin-bottom:4px}
+.tl-era.now .tl-year{color:var(--gold);font-weight:600}
+.tl-sport{font-size:.58rem;color:var(--old);text-align:center;line-height:1.3}
+.tl-era.now .tl-sport{color:var(--gold)}
+.tl-badge{font-size:.42rem;letter-spacing:.06em;text-transform:uppercase;padding:2px 6px;border-radius:6px;border:1px solid rgba(74,74,90,.15);color:var(--old);margin-top:4px;white-space:nowrap}
 
-/* Old eras */
-.era-old .era-dot{background:var(--old);opacity:.4}
-.era-old .era-year{color:var(--old)}
-.era-old .era-sport{color:var(--old)}
-.era-old .era-system{color:var(--old)}
+/* ── Hero contrast boxes ── */
+.hero-split{display:grid;grid-template-columns:1fr 50px 1fr;max-width:760px;width:100%;align-items:center}
+.hero-box{border-radius:20px;padding:28px 24px;text-align:center}
+.hero-label{font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px}
+.hero-big{font-family:'Libre Caslon Display',serif;font-size:clamp(1.2rem,2.8vw,1.8rem);line-height:1.2;margin-bottom:8px}
+.hero-sub{font-size:.68rem;line-height:1.5}
+.hero-mid{display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:var(--gold);opacity:.4}
 
-/* Same system badge */
-.same{display:inline-block;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:8px;border:1px solid rgba(74,74,90,.15);color:var(--old);margin-left:8px;vertical-align:middle}
+/* ── Supporting rows ── */
+.support{display:grid;grid-template-columns:1fr 1fr;max-width:660px;width:100%;gap:6px}
+.s-row{display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:10px;border:1px solid;font-size:.66rem}
+.s-icon{font-size:.85rem;flex-shrink:0;width:20px;text-align:center}
+.s-old{border-color:rgba(74,74,90,.1);color:var(--old)}
+.s-old .s-icon{opacity:.4;filter:grayscale(1)}
+.s-new{border-color:rgba(202,165,74,.12);color:var(--fg)}
 
-/* NOW marker */
-.now-marker{position:relative;padding:20px 0;margin:8px 0}
-.now-line{position:absolute;left:-40px;right:0;top:50%;height:1px;background:linear-gradient(to right,var(--gold),rgba(202,165,74,.1))}
-.now-label{position:relative;display:inline-block;font-family:'Libre Caslon Display',serif;font-size:clamp(.9rem,2vw,1.2rem);color:var(--gold);background:var(--bg);padding:0 12px 0 0;z-index:1}
-.now-dot{position:absolute;left:-38px;width:16px;height:16px;border-radius:50%;background:var(--gold);top:50%;transform:translateY(-50%);box-shadow:0 0 16px rgba(202,165,74,.4);z-index:1}
-
-/* Future section */
-.future{position:relative;padding:16px 0 8px}
-.future-dot{position:absolute;left:-38px;width:12px;height:12px;border-radius:50%;background:var(--gold);top:20px;box-shadow:0 0 8px rgba(202,165,74,.2)}
-
-.future-title{font-family:'Libre Caslon Display',serif;font-size:clamp(1rem,2.5vw,1.4rem);color:var(--gold);margin-bottom:12px;line-height:1.2}
-.future-grid{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.future-tag{font-size:.6rem;padding:5px 12px;border-radius:10px;border:1px solid rgba(202,165,74,.15);color:var(--gold);background:rgba(202,165,74,.03)}
+/* ── Future tags ── */
+.future-grid{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-width:660px}
+.future-tag{font-size:.56rem;padding:4px 11px;border-radius:10px;border:1px solid rgba(202,165,74,.15);color:var(--gold);background:rgba(202,165,74,.03)}
 
 #C{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:-1;opacity:.15}
-@media(max-width:500px){.timeline{padding-left:48px}.era-dot{left:-28px}.now-dot{left:-28px}.future-dot{left:-28px}.timeline::before{left:20px}}
+
+@media(max-width:700px){
+  .tl-track{flex-wrap:wrap;justify-content:center;gap:8px;padding-top:20px}
+  .tl-track::after{display:none}
+  .tl-era::after{display:none}
+  .hero-split{grid-template-columns:1fr;gap:16px}
+  .hero-mid{transform:rotate(90deg)}
+  .support{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
 <canvas id="C"></canvas>
 
-<h1>100 years of the same system.<br><span style="color:var(--gold)">Until now.</span></h1>
+<h1>100 years of the same system. <span style="color:var(--gold)">Until now.</span></h1>
 
-<div class="timeline">
-
-  <div class="era era-old">
-    <div class="era-dot"></div>
-    <div class="era-year">1920</div>
-    <div class="era-sport">Tennis clubs emerge <span class="same">Skill ratings</span></div>
-    <div class="era-system">Organized by ability. Manual coordination. One person decides who plays.</div>
-  </div>
-
-  <div class="era era-old">
-    <div class="era-dot"></div>
-    <div class="era-year">1950</div>
-    <div class="era-sport">Golf clubs boom <span class="same">Same system</span></div>
-    <div class="era-system">Handicaps. Tee time sheets. Pro shop manages groups.</div>
-  </div>
-
-  <div class="era era-old">
-    <div class="era-dot"></div>
-    <div class="era-year">1970</div>
-    <div class="era-sport">Racquetball explodes <span class="same">Same system</span></div>
-    <div class="era-system">Ratings ladder. Challenge boards. Sign-up sheets on the wall.</div>
-  </div>
-
-  <div class="era era-old">
-    <div class="era-dot"></div>
-    <div class="era-year">1980</div>
-    <div class="era-sport">Squash grows <span class="same">Same system</span></div>
-    <div class="era-system">NTRP ratings. Club pro coordinates. Spreadsheets replace paper.</div>
-  </div>
-
-  <div class="era era-old">
-    <div class="era-dot"></div>
-    <div class="era-year">2000</div>
-    <div class="era-sport">Booking software arrives <span class="same">Same system</span></div>
-    <div class="era-system">CourtReserve, ClubSpark. Digitized the calendar. Changed nothing about who plays with whom.</div>
-  </div>
-
-  <div class="era era-old">
-    <div class="era-dot"></div>
-    <div class="era-year">2010</div>
-    <div class="era-sport">Skill rating apps <span class="same">Same system</span></div>
-    <div class="era-system">DUPR, UTR. One number defines you. Your rating gets you access.</div>
-  </div>
-
-  <div class="era era-old">
-    <div class="era-dot"></div>
-    <div class="era-year">2020</div>
-    <div class="era-sport">Pickleball explodes. 36M players. <span class="same">Same system</span></div>
-    <div class="era-system">Fastest-growing sport in America. Still using the same paradigm from 1920.</div>
-  </div>
-
-  <!-- THE BREAK -->
-  <div class="now-marker">
-    <div class="now-dot"></div>
-    <div class="now-line"></div>
-    <div class="now-label">Now: the paradigm shifts.</div>
-  </div>
-
-  <!-- THE FUTURE -->
-  <div class="future">
-    <div class="future-dot"></div>
-    <div class="future-title">Measures <em>human value exchange</em><br>instead of skill ratings.</div>
-    <div class="future-grid">
-      <span class="future-tag">Human connection measured</span>
-      <span class="future-tag">Value exchange routed</span>
-      <span class="future-tag">True social matchmaking</span>
-      <span class="future-tag">Optimal group experience</span>
-      <span class="future-tag">Networked reciprocity</span>
-      <span class="future-tag">Community value optimized</span>
-      <span class="future-tag">Human uniqueness</span>
+<!-- ── HORIZONTAL TIMELINE ── -->
+<div class="tl-wrap">
+  <div class="tl-track">
+    <div class="tl-era old">
+      <div class="tl-icon">🎾</div>
+      <div class="tl-year">1920</div>
+      <div class="tl-sport">Tennis</div>
+      <div class="tl-badge">Skill ratings</div>
+    </div>
+    <div class="tl-era old">
+      <div class="tl-icon">⛳</div>
+      <div class="tl-year">1950</div>
+      <div class="tl-sport">Golf</div>
+      <div class="tl-badge">Same system</div>
+    </div>
+    <div class="tl-era old">
+      <div class="tl-icon">🏸</div>
+      <div class="tl-year">1970</div>
+      <div class="tl-sport">Racquetball</div>
+      <div class="tl-badge">Same system</div>
+    </div>
+    <div class="tl-era old">
+      <div class="tl-icon">🥎</div>
+      <div class="tl-year">1980</div>
+      <div class="tl-sport">Squash</div>
+      <div class="tl-badge">Same system</div>
+    </div>
+    <div class="tl-era old">
+      <div class="tl-icon">💻</div>
+      <div class="tl-year">2000</div>
+      <div class="tl-sport">Booking<br>software</div>
+      <div class="tl-badge">Same system</div>
+    </div>
+    <div class="tl-era old">
+      <div class="tl-icon">⭐</div>
+      <div class="tl-year">2010</div>
+      <div class="tl-sport">DUPR /<br>UTR</div>
+      <div class="tl-badge">Same system</div>
+    </div>
+    <div class="tl-era old">
+      <div class="tl-icon">🏓</div>
+      <div class="tl-year">2020</div>
+      <div class="tl-sport">Pickleball<br>36M players</div>
+      <div class="tl-badge">Same system</div>
+    </div>
+    <div class="tl-era now">
+      <div class="tl-icon">✨</div>
+      <div class="tl-year">NOW</div>
+      <div class="tl-sport" style="font-weight:500">Give 'n Take</div>
     </div>
   </div>
+</div>
 
+<!-- ── HERO CONTRAST ── -->
+<div class="hero-split">
+  <div class="hero-box" style="border:1px solid rgba(74,74,90,.15);background:rgba(74,74,90,.03)">
+    <div class="hero-label" style="color:var(--old)">Old paradigm</div>
+    <div class="hero-big" style="color:var(--old)">Measures<br><em>skill ratings</em></div>
+    <div class="hero-sub" style="color:var(--old);opacity:.6">A number defines you.<br>Your rating gets you access.</div>
+  </div>
+  <div class="hero-mid">➤</div>
+  <div class="hero-box" style="border:1px solid rgba(202,165,74,.2);background:rgba(202,165,74,.03)">
+    <div class="hero-label" style="color:var(--gold)">Give 'n Take</div>
+    <div class="hero-big" style="color:var(--gold)">Measures<br><em>human value exchange</em></div>
+    <div class="hero-sub" style="color:var(--fg);opacity:.6">What you give to others.<br>What you get back.</div>
+  </div>
+</div>
+
+<!-- ── SUPPORTING ROWS ── -->
+<div class="support">
+  <div class="s-row s-old"><div class="s-icon">📋</div>Manual coordination</div>
+  <div class="s-row s-new"><div class="s-icon">🤖</div>True social matchmaking</div>
+  <div class="s-row s-old"><div class="s-icon">💻</div>Booking software, no intelligence</div>
+  <div class="s-row s-new"><div class="s-icon">🏆</div>Optimal group experience</div>
+  <div class="s-row s-old"><div class="s-icon">🎲</div>Self-organize or get lucky</div>
+  <div class="s-row s-new"><div class="s-icon">🤝</div>Human connection measured</div>
+  <div class="s-row s-old"><div class="s-icon">🚫</div>Nobody measures what matters</div>
+  <div class="s-row s-new"><div class="s-icon">🌐</div>Networked reciprocity</div>
+</div>
+
+<!-- ── FUTURE TAGS ── -->
+<div class="future-grid">
+  <span class="future-tag">Human connection</span>
+  <span class="future-tag">Value exchange</span>
+  <span class="future-tag">Social matchmaking</span>
+  <span class="future-tag">Group experience</span>
+  <span class="future-tag">Community value</span>
+  <span class="future-tag">Networked reciprocity</span>
+  <span class="future-tag">Human uniqueness</span>
 </div>
 
 <script>
